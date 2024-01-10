@@ -37,7 +37,7 @@ const Register = () => {
       console.log('Registration successful:', responseData);
 
       // Redirect to another page or perform other actions after successful registration
-      //router.push('/');
+      router.push('/auth/login');
     } catch (error) {
       // Handle registration error
       console.error('Registration error:', error);

@@ -35,7 +35,7 @@ const Login = () => {
       console.log('Login successful', responseData);
 
       
-      // router.push('/');
+       router.push('/');
     } catch (error) {
       console.log('Error logging in:', error);
       // Handle login error
