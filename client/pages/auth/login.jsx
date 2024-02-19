@@ -32,9 +32,13 @@ const Login = () => {
         url: '/api/auth/login',
         data: userData,
       });
+
+      const token = responseData.data.token;
+      localStorage.setItem('token', token);
+      console.log('token:',token)
+
       console.log('Login successful', responseData);
 
-      
        router.push('/');
     } catch (error) {
       console.log('Error logging in:', error);

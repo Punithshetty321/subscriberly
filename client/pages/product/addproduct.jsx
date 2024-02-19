@@ -1,5 +1,5 @@
-// pages/create-product.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { axiosInstance } from '../../configs/axios';
 
 const CreateProduct = () => {
   const [product, setProduct] = useState({
@@ -10,25 +10,47 @@ const CreateProduct = () => {
     interval: 'Weekly', // Default interval
   });
 
+  // Use state to store the token
+  const [storedToken, setStoredToken] = useState('');
+
+  useEffect(() => {
+    // Check if we are on the client side before accessing localStorage
+    const token = window.localStorage.getItem('token');
+    setStoredToken(token);
+    console.log('token:', token);
+  }, []); // Empty dependency array ensures this effect runs only once when the component mounts
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/products', {
+      // ...
+
+      const userData = { 
+        name: product.name,
+        description: product.description,
+        image: product.image,
+        price: product.price,
+        interval: product.interval,
+      };
+
+      const responseData = await axiosInstance({
         method: 'POST',
+        url: '/api/products/products',
+        data: userData,
+        // Add the token to the headers
         headers: {
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${storedToken}`,
         },
-        body: JSON.stringify(product),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Product created successfully:', data);
+
+      if (responseData.status === 201) {
+        
+        console.log('Product created successfully:', responseData);
         // You can redirect or handle success as needed
       } else {
-        const errorData = await response.json();
-        console.error('Error creating product:', errorData);
+        console.error('Error creating product:', responseData);
       }
     } catch (error) {
       console.error('Error creating product:', error);
