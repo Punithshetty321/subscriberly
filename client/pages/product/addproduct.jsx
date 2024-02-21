@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { axiosInstance } from '../../configs/axios';
+import { Router } from 'next/router';
 
 const CreateProduct = () => {
   const [product, setProduct] = useState({
@@ -7,7 +8,7 @@ const CreateProduct = () => {
     description: '',
     image: '',
     price: '',
-    interval: 'Weekly', // Default interval
+    interval: 'monthly', // Default interval
   });
 
   // Use state to store the token
@@ -31,16 +32,15 @@ const CreateProduct = () => {
         description: product.description,
         image: product.image,
         price: product.price,
-        interval: product.interval,
+        intervals: product.interval,
       };
 
       const responseData = await axiosInstance({
         method: 'POST',
         url: '/api/products/products',
         data: userData,
-        // Add the token to the headers
         headers: {
-          Authorization: `Bearer ${storedToken}`,
+          Authorization: `${storedToken}`,
         },
       });
 
@@ -48,7 +48,8 @@ const CreateProduct = () => {
       if (responseData.status === 201) {
         
         console.log('Product created successfully:', responseData);
-        // You can redirect or handle success as needed
+        //Router.push('/');
+      
       } else {
         console.error('Error creating product:', responseData);
       }
@@ -112,9 +113,9 @@ const CreateProduct = () => {
             value={product.interval}
             onChange={handleChange}
           >
-            <option value="Weekly">Weekly</option>
-            <option value="Monthly">Monthly</option>
-            <option value="Annually">Annually</option>
+            <option value="Weekly">weekly</option>
+            <option value="Monthly">monthly</option>
+            <option value="Annually">annually</option>
           </select>
         </label>
         <br />

@@ -33,8 +33,8 @@ const Login = () => {
         data: userData,
       });
 
-      const token = responseData.data.token;
-      localStorage.setItem('token', token);
+      const token = responseData.data.token;  
+      localStorage.setItem('token', token);   //storing token locally
       console.log('token:',token)
 
       console.log('Login successful', responseData);
