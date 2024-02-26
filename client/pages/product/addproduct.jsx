@@ -8,10 +8,10 @@ const CreateProduct = () => {
     description: '',
     image: '',
     price: '',
-    interval: 'monthly', // Default interval
+    intervals: 'monthly', // Default interval
   });
 
-  // Use state to store the token
+  /* Use state to store the token
   const [storedToken, setStoredToken] = useState('');
 
   useEffect(() => {
@@ -19,28 +19,28 @@ const CreateProduct = () => {
     const token = window.localStorage.getItem('token');
     setStoredToken(token);
     console.log('token:', token);
-  }, []); // Empty dependency array ensures this effect runs only once when the component mounts
+  }, []); // Empty dependency array ensures this effect runs only once when the component mounts */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // ...
+      const token = window.localStorage.getItem('token');
 
-      const userData = { 
-        name: product.name,
-        description: product.description,
-        image: product.image,
-        price: product.price,
-        intervals: product.interval,
-      };
+      const { name, description, image, price, intervals} = product;
 
       const responseData = await axiosInstance({
         method: 'POST',
         url: '/api/products/products',
-        data: userData,
+        data: {
+          name,
+          description,
+          image,
+          price,
+          intervals
+        },
         headers: {
-          Authorization: `${storedToken}`,
+          Authorization: `${token}`,
         },
       });
 
@@ -113,9 +113,9 @@ const CreateProduct = () => {
             value={product.interval}
             onChange={handleChange}
           >
-            <option value="Weekly">weekly</option>
-            <option value="Monthly">monthly</option>
-            <option value="Annually">annually</option>
+            <option value="weekly">weekly</option>
+            <option value="monthly">monthly</option>
+            <option value="annually">annually</option>
           </select>
         </label>
         <br />

@@ -8,6 +8,9 @@ const Home = () => {
     const navigateToRegister = () =>{
         router.push('/auth/register');
     };
+    const navigateToLogin = () =>{
+      router.push('/auth/login');
+    };
   return (
     <div>
         
@@ -26,8 +29,8 @@ const Home = () => {
             </div>
           </div>
           <div className={styles.authButtons}>
-            <button onClick={navigateToRegister}>Login</button>
-            <button>Register</button>
+            <button onClick={navigateToRegister}>Register</button>
+            <button onClick={navigateToLogin}>Login</button>
           </div>
         </nav>
       </header>
