@@ -1,14 +1,29 @@
-// pages/index.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../styles/styles.module.css';
 import { Router, useRouter } from 'next/router';
 
 const Home = () => {
   const router = useRouter();
+  const[isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  },[]);
+
     const navigateToRegister = () =>{
         router.push('/auth/register');
     };
     const navigateToLogin = () =>{
+      router.push('/auth/login');
+    };
+    const navigateToAddProduct = () =>{
+      router.push('/product/addproduct');
+    };
+    const handleLogout = () => {
+      // Clear the token from local storage and redirect to the login page
+      window.localStorage.removeItem('token');
+      setIsLoggedIn(false);
       router.push('/auth/login');
     };
   return (
@@ -29,8 +44,16 @@ const Home = () => {
             </div>
           </div>
           <div className={styles.authButtons}>
+            {isLoggedIn ?(
+              <><button onClick={navigateToAddProduct}>AddProduct</button><button onClick={handleLogout}>Logout</button></>
+              
+            ):(
+              <>
+            
             <button onClick={navigateToRegister}>Register</button>
             <button onClick={navigateToLogin}>Login</button>
+            </>
+            )}
           </div>
         </nav>
       </header>
