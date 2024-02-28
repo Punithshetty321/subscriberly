@@ -11,15 +11,6 @@ const CreateProduct = () => {
     intervals: 'monthly', // Default interval
   });
 
-  /* Use state to store the token
-  const [storedToken, setStoredToken] = useState('');
-
-  useEffect(() => {
-    // Check if we are on the client side before accessing localStorage
-    const token = window.localStorage.getItem('token');
-    setStoredToken(token);
-    console.log('token:', token);
-  }, []); // Empty dependency array ensures this effect runs only once when the component mounts */
 
   const handleSubmit = async (e) => {
     e.preventDefault();

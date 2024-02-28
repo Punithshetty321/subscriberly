@@ -1,29 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/styles.module.css';
 import { Router, useRouter } from 'next/router';
+import { useAuth } from './AuthContext';
 
 const Home = () => {
   const router = useRouter();
-  const[isLoggedIn, setIsLoggedIn] = useState(false);
+  const{isLoggedIn, logout, navigateToAddProduct, navigateToLogin, navigateToRegister } = useAuth();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-  },[]);
-
-    const navigateToRegister = () =>{
-        router.push('/auth/register');
-    };
-    const navigateToLogin = () =>{
-      router.push('/auth/login');
-    };
-    const navigateToAddProduct = () =>{
-      router.push('/product/addproduct');
-    };
+   
     const handleLogout = () => {
-      // Clear the token from local storage and redirect to the login page
-      window.localStorage.removeItem('token');
-      setIsLoggedIn(false);
+      logout();
       router.push('/auth/login');
     };
   return (
