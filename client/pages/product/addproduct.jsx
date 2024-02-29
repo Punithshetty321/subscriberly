@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { axiosInstance } from '../../configs/axios';
-import { Router } from 'next/router';
 
 const CreateProduct = () => {
   const [product, setProduct] = useState({

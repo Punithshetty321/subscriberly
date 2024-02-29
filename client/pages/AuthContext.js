@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 // Create a new context
 const AuthContext = createContext();
@@ -11,6 +12,7 @@ export const useAuth = () => {
 // Auth provider component
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     // Check if the user is logged in
