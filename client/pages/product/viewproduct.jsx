@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { axiosInstance } from '../../configs/axios';
-import styles from '../../styles/viewproduct.module.css';
+import styles from '../../styles/viewproduct.module.css'; // Import the CSS file
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
@@ -10,15 +10,21 @@ const ViewProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        // Fetch token from localStorage
         const token = localStorage.getItem('token');
+
+        // Fetch products from the backend API with the token included in the headers
         const response = await axiosInstance.get('/api/products/products', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        // Update state with fetched products
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
+        // Handle errors
         setError(error.message);
         setLoading(false);
       }
@@ -36,19 +42,16 @@ const ViewProducts = () => {
   }
 
   return (
-    <div className={styles.productContainer}>
-      <h1>All Products</h1>
-      <div className={styles.productGrid}>
-        {products.map((product) => (
-          <div key={product.id} className={styles.productCard}>
-            <h2>{product.name}</h2>
-            <p>Description: {product.description}</p>
-            <p>Price: {product.price}</p>
-            <p>Interval: {product.interval}</p>
-            {/* Add more product details here */}
-          </div>
-        ))}
-      </div>
+    <div className={styles.productContainer}> {/* Apply productContainer class */}
+      {products.map((product) => (
+        <div key={product.id} className={styles.productTile}> {/* Apply productTile class */}
+          <h2>{product.name}</h2>
+          <p>Description: {product.description}</p>
+          <p>Price: {product.price}</p>
+          <p>Interval: {product.interval}</p>
+          {/* Add more product details here */}
+        </div>
+      ))}
     </div>
   );
 };
