@@ -1,0 +1,47 @@
+.header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+  }
+  
+ .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+  }
+  
+  .dropdown {
+    margin-left: 15px;
+  }
+  
+  .label {
+    margin-right: 5px;
+  }
+  
+  .auth-buttons button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  
+  .main {
+    max-width: 960px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+  

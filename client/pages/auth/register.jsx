@@ -33,11 +33,14 @@ const Register = () => {
         url: '/api/auth/register',
         data: userData
       });
+      
 
       console.log('Registration successful:', responseData);
+      const token = responseData.data.token;
+      localStorage.setItem('token',token);
 
       // Redirect to another page or perform other actions after successful registration
-      //router.push('/');
+      router.push('/');
     } catch (error) {
       // Handle registration error
       console.error('Registration error:', error);
