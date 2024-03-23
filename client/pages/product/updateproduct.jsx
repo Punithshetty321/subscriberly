@@ -1,48 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { axiosInstance } from '../../configs/axios';
 
-const CreateProduct = () => {
-  const [product, setProduct] = useState({
-    name: '',
-    description: '',
-    image: '',
-    price: '',
-    intervals: 'monthly', // Default interval
+const UpdateProduct = ({ product }) => {
+  const [updatedProduct, setUpdatedProduct] = useState({
+    name: product.name,
+    description: product.description,
+    image: product.image,
+    price: product.price,
+    intervals: product.intervals
   });
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const responseData = await axiosInstance.post('/api/products/products', product);
+      const token = window.localStorage.getItem('token');
 
-      if (responseData.status === 201) {
-        console.log('Product created successfully:', responseData);
-        //Router.push('/');
+      const { name, description, image, price, intervals} = updatedProduct;
+
+      const responseData = await axiosInstance({
+        method: 'PUT', 
+        url: `/api/products/products/${product.id}`, 
+        data: {
+          name,
+          description,
+          image,
+          price,
+          intervals
+        },
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+
+      if (responseData.status === 200) {
+        console.log('Product updated successfully:', responseData);
       } else {
-        console.error('Error creating product:', responseData);
+        console.error('Error updating product:', responseData);
       }
     } catch (error) {
-      console.error('Error creating product:', error);
+      console.error('Error updating product:', error);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProduct({ ...product, [name]: value });
+    setUpdatedProduct({ ...updatedProduct, [name]: value });
   };
 
   return (
     <div>
-      <h1>Create Product</h1>
+      <h1>Update Product</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Product Name:
           <input
             type="text"
             name="name"
-            value={product.name}
+            value={updatedProduct.name}
             onChange={handleChange}
           />
         </label>
@@ -51,7 +66,7 @@ const CreateProduct = () => {
           Description:
           <textarea
             name="description"
-            value={product.description}
+            value={updatedProduct.description}
             onChange={handleChange}
           />
         </label>
@@ -61,7 +76,7 @@ const CreateProduct = () => {
           <input
             type="text"
             name="image"
-            value={product.image}
+            value={updatedProduct.image}
             onChange={handleChange}
           />
         </label>
@@ -71,7 +86,7 @@ const CreateProduct = () => {
           <input
             type="number"
             name="price"
-            value={product.price}
+            value={updatedProduct.price}
             onChange={handleChange}
           />
         </label>
@@ -80,7 +95,7 @@ const CreateProduct = () => {
           Interval:
           <select
             name="interval"
-            value={product.interval}
+            value={updatedProduct.interval}
             onChange={handleChange}
           >
             <option value="weekly">weekly</option>
@@ -89,10 +104,10 @@ const CreateProduct = () => {
           </select>
         </label>
         <br />
-        <button type="submit">Create Product</button>
+        <button type="submit">Update Product</button>
       </form>
     </div>
   );
 };
 
-export default CreateProduct;
+export default UpdateProduct;

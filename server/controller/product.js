@@ -61,7 +61,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
-// Delete a product 
+// Delete a product
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
 

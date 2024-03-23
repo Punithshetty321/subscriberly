@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/styles.module.css';
 import { useRouter } from 'next/router';
-import { useAuth } from './AuthContext';
+import { useAuth } from '../pages/AuthContext';
 
 const Navbar = () => {
   const router = useRouter();
