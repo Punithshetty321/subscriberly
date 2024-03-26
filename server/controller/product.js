@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
 import Product from "../models/product.js";
+import { uploadFileToS3 } from "../services/imageupload.js"; 
 import jwt from 'jsonwebtoken';
 
 
@@ -17,7 +18,16 @@ const createProduct = async (req, res) => {
       return res.status(400).json({ error: 'Please provide all required fields' });
     }
 
-    const newProduct = new Product({ name, description, image, price, intervals, owner });
+    const file = req.files.image;
+    const imageUrl = await uploadFileToS3(file, 'services');
+
+    const newProduct = new Product({
+       name,
+       description, 
+       image: imageUrl, 
+       price, 
+       intervals, 
+       owner });
     await newProduct.save();
     res.status(201).json(newProduct);
   } catch (error) {
@@ -66,19 +76,22 @@ const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedProduct = await Product.findOneAndDelete({ _id: id });
+    const product = await Product.findById(id);
 
-    if (deletedProduct) {
-      
-      if (deletedProduct.owner.toString() === req.user.userId) {
-        return res.status(200).json(deletedProduct);
-      } else {
-        return res.status(403).json({ error: 'Access denied. User does not own the product.' });
-      }
-    } else {
-      return res.status(404).json({ error: 'Product not found' });
+    if (!product) {
+        return res.status(404).json({ error: 'Product not found' });
     }
+    
+    if (product.owner.toString() !== req.user.userId) {
+       return res.status(403).json({ error: 'Access denied. User does not own the product.' });
+    }
+    
+    await Product.findByIdAndDelete(id);
+  
+    return res.status(200).send(true);
+      
   } catch (error) {
+    console.error('Error creating product', error);
     return res.status(500).json({ error: 'Error deleting product' });
   }
 };
